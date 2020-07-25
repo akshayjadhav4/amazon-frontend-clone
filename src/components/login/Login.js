@@ -63,9 +63,9 @@ function Login() {
           Notice.
         </p>
         <hr />
-        <span>New to Amazone?</span>
+        <span>New to Amazon?</span>
         <button className="login_registerButton" onClick={register}>
-          Create your Amazone account
+          Create your Amazon account
         </button>
       </div>
     </div>
