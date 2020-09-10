@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "react-d0623"
+  },
+  "targets": {
+    "react-d0623": {
+      "hosting": {
+        "amazon": [
+          "ecomm-a7cfe"
+        ]
+      }
+    }
+  }
+}
