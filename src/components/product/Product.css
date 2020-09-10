@@ -1,7 +1,8 @@
 .product {
   display: flex;
   flex-direction: column;
-  background-color: white;
+  background-color: #2c2c2e;
+  color: white;
   max-height: 400px;
   min-width: 100px;
   margin: 10px;
@@ -32,6 +33,6 @@
 }
 
 .product > button {
-    background-color: #f0c14f;
-    border:  1px solid #a88734 #9c7e31 #846a29;
+  background-color: #f0c14f;
+  border: 1px solid #a88734 #9c7e31 #846a29;
 }
