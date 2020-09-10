@@ -1,12 +1,12 @@
-import React,{useEffect} from 'react';
-import './App.css';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-import Header from './components/header/Header';
-import Home from './components/home/Home';
-import Checkout from './components/checkout/Checkout';
-import Login from './components/login/Login';
-import { useStateValue } from './contextApi/StateProvider';
-import { auth } from './firebase/Firebase';
+import React, { useEffect } from "react";
+import "./App.css";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import Header from "./components/header/Header";
+import Home from "./components/home/Home";
+import Checkout from "./components/checkout/Checkout";
+import Login from "./components/login/Login";
+import { useStateValue } from "./contextApi/StateProvider";
+import { auth } from "./firebase/Firebase";
 
 function App() {
   const [{ user }, dispatch] = useStateValue();
@@ -28,21 +28,21 @@ function App() {
       unsubscribe();
     };
   }, []);
-  console.info("USER",user)
+
   return (
     <Router>
       <div className="App">
         <Switch>
           <Route exact path="/">
             <Header />
-            <Home/>
+            <Home />
           </Route>
           <Route exact path="/checkout">
-          <Header />
-           <Checkout/>
+            <Header />
+            <Checkout />
           </Route>
           <Route exact path="/login">
-            <Login/>
+            <Login />
           </Route>
         </Switch>
       </div>
