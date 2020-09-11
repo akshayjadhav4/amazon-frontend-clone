@@ -118,9 +118,16 @@ function Payment() {
                   thousandSeparator={true}
                   prefix={"₹"}
                 />
-                <button disabled={proccessing || disable || succeeded}>
-                  <span>{proccessing ? <p>Proccessing...</p> : "Buy Now"}</span>
-                </button>
+                {basket?.length > 0 && (
+                  <button
+                    disabled={proccessing || disable || succeeded}
+                    className="payment__button"
+                  >
+                    <span>
+                      {proccessing ? <p>Proccessing...</p> : "Buy Now"}
+                    </span>
+                  </button>
+                )}
               </div>
               {error && <div>{error}</div>}
             </form>
