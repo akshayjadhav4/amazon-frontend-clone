@@ -6,13 +6,12 @@ import ShoppingBasketIcon from "@material-ui/icons/ShoppingBasket";
 import { useStateValue } from "../../contextApi/StateProvider";
 import { auth } from "../../firebase/Firebase";
 function Header() {
-
-  const [{basket ,user}]=useStateValue()
-  const login = () =>{
-    if(user){
-      auth.signOut()
+  const [{ basket, user }] = useStateValue();
+  const login = () => {
+    if (user) {
+      auth.signOut();
     }
-  }
+  };
   return (
     <nav className="header">
       <Link to="/">
@@ -30,11 +29,13 @@ function Header() {
         <Link to={!user && "/login"} className="header__link">
           <div onClick={login} className="header_options">
             <span className="header_optionLineOne">Hello,{user?.email}</span>
-  <span className="header_optionLineTwo">{user ? 'Sign Out' : 'Sign In'}</span>
+            <span className="header_optionLineTwo">
+              {user ? "Sign Out" : "Sign In"}
+            </span>
           </div>
         </Link>
 
-        <Link to="/" className="header__link">
+        <Link to="/orders" className="header__link">
           <div className="header_options">
             <span className="header_optionLineOne">Returns</span>
             <span className="header_optionLineTwo">& Orders</span>
@@ -51,7 +52,9 @@ function Header() {
         <Link to="/checkout" className="header__link">
           <div className="header_optionBasket">
             <ShoppingBasketIcon />
-  <span className="header_optionLineTwo header__basketCount">{basket?.length}</span>
+            <span className="header_optionLineTwo header__basketCount">
+              {basket?.length}
+            </span>
           </div>
         </Link>
       </div>

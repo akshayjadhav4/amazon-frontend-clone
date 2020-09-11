@@ -27,6 +27,7 @@ function Orders() {
   }, [user]);
   return (
     <div className="orders">
+      <h1>Your Orders</h1>
       <div className="orders__order">
         {orders.map((order) => (
           <OrderProduct order={order} key={order.id} />
