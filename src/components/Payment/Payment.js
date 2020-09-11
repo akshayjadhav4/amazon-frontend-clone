@@ -1,13 +1,63 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./Payment.css";
 import CheckoutProduct from "../checkout/CheckoutProduct";
 import FlipMove from "react-flip-move";
 import { useStateValue } from "../../contextApi/StateProvider";
-import { Link } from "react-router-dom";
-
+import { Link, useHistory } from "react-router-dom";
+import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
+import CurrencyFormat from "react-currency-format";
+import { getBasketTotal } from "../../contextApi/reducer";
+import axios from "../../api/axios";
 function Payment() {
   const [{ basket, user }, dispatch] = useStateValue();
 
+  const stripe = useStripe();
+  const elements = useElements();
+
+  const history = useHistory();
+
+  const [disable, setDisable] = useState(true);
+  const [error, setError] = useState(null);
+  const [succeeded, setSucceeded] = useState(false);
+  const [proccessing, setProccessing] = useState(false);
+  const [clientSecret, setClientSecret] = useState("");
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setProccessing(true);
+    const payLoad = await stripe
+      .confirmCardPayment(clientSecret, {
+        payment_method: {
+          type: "card",
+          card: elements.getElement(CardElement),
+        },
+      })
+      .then(({ paymentIntent }) => {
+        //paymentIntent = payment confirmation
+        setSucceeded(true);
+        setError(null);
+        setProccessing(false);
+        dispatch({
+          type: "EMPTY_BASKET",
+        });
+        history.replace("/orders");
+      });
+  };
+  const handleChange = (event) => {
+    setDisable(event.empty);
+    setError(event.error ? event.error.message : "");
+  };
+
+  useEffect(() => {
+    const getClientSecret = async () => {
+      const response = await axios({
+        method: "post",
+        url: `/payments/create?total=${getBasketTotal(basket) * 100}`,
+      });
+      setClientSecret(response.data.clientSecret);
+    };
+    getClientSecret();
+  }, [basket]);
   return (
     <div className="payment">
       <div className="payment__container">
@@ -43,7 +93,27 @@ function Payment() {
             <h3>Payment Method</h3>
           </div>
           <div className="payment__details">
-            <p>Strip Magic</p>
+            <form onSubmit={handleSubmit}>
+              <CardElement onChange={handleChange} />
+              <div className="payment__priceContainer">
+                <CurrencyFormat
+                  renderText={(value) => (
+                    <>
+                      <h3>Order Total : {value}</h3>
+                    </>
+                  )}
+                  decimalScale={2}
+                  value={getBasketTotal(basket)}
+                  displayType={"text"}
+                  thousandSeparator={true}
+                  prefix={"₹"}
+                />
+                <button disabled={proccessing || disable || succeeded}>
+                  <span>{proccessing ? <p>Proccessing...</p> : "Buy Now"}</span>
+                </button>
+              </div>
+              {error && <div>{error}</div>}
+            </form>
           </div>
         </div>
       </div>
