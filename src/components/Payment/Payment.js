@@ -98,41 +98,51 @@ function Payment() {
             </FlipMove>
           </div>
         </div>
-        <div className="payment__section">
-          <div className="payment__title">
-            <h3>Payment Method</h3>
-          </div>
-          <div className="payment__details">
-            <form onSubmit={handleSubmit}>
-              <CardElement onChange={handleChange} />
-              <div className="payment__priceContainer">
-                <CurrencyFormat
-                  renderText={(value) => (
-                    <>
-                      <h3>Order Total : {value}</h3>
-                    </>
+        {user ? (
+          <div className="payment__section">
+            <div className="payment__title">
+              <h3>Payment Method</h3>
+            </div>
+            <div className="payment__details">
+              <form onSubmit={handleSubmit}>
+                <CardElement onChange={handleChange} />
+                <div className="payment__priceContainer">
+                  <CurrencyFormat
+                    renderText={(value) => (
+                      <>
+                        <h3>Order Total : {value}</h3>
+                      </>
+                    )}
+                    decimalScale={2}
+                    value={getBasketTotal(basket)}
+                    displayType={"text"}
+                    thousandSeparator={true}
+                    prefix={"₹"}
+                  />
+                  {basket?.length > 0 ? (
+                    <button
+                      disabled={proccessing || disable || succeeded}
+                      className="payment__button"
+                    >
+                      <span>
+                        {proccessing ? <p>Proccessing...</p> : "Buy Now"}
+                      </span>
+                    </button>
+                  ) : (
+                    <p>Cart is empty</p>
                   )}
-                  decimalScale={2}
-                  value={getBasketTotal(basket)}
-                  displayType={"text"}
-                  thousandSeparator={true}
-                  prefix={"₹"}
-                />
-                {basket?.length > 0 && (
-                  <button
-                    disabled={proccessing || disable || succeeded}
-                    className="payment__button"
-                  >
-                    <span>
-                      {proccessing ? <p>Proccessing...</p> : "Buy Now"}
-                    </span>
-                  </button>
-                )}
-              </div>
-              {error && <div>{error}</div>}
-            </form>
+                </div>
+                {error && <div>{error}</div>}
+              </form>
+            </div>
           </div>
-        </div>
+        ) : (
+          <div className="payment__section">
+            <div className="payment__title">
+              <h3>Login to complete payment process</h3>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
