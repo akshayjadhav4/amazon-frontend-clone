@@ -1,7 +1,22 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./Home.css";
 import Product from "../product/Product";
+import { db } from "../../firebase/Firebase";
+
 function Home() {
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    db.collection("products").onSnapshot((snapshot) => {
+      setProducts(
+        snapshot.docs.map((doc) => ({
+          id: doc.id,
+          data: doc.data(),
+        }))
+      );
+    });
+  }, []);
+
   return (
     <div className="home">
       <img
@@ -10,55 +25,17 @@ function Home() {
         alt=""
       />
       <div className="home__row">
-        <Product
-          id={123}
-          image="https://images-na.ssl-images-amazon.com/images/I/5103Xi7yQgL._SX679_.jpg"
-          price={62900}
-          rating={4}
-          title="Apple iPhone 11 (128GB) - Black"
-        />
-        <Product
-          id={101}
-          image="https://images-na.ssl-images-amazon.com/images/I/51iYAkshPAL._SX410_BO1,204,203,200_.jpg"
-          price={2996.0}
-          rating={5}
-          title="The Witcher Boxed Set: Blood of Elves, The Time of Contempt, Baptism of Fire Paperback – 3 October 2017"
-        />
-      </div>
-
-      <div className="home__row">
-        <Product
-          id={789}
-          image="https://images-na.ssl-images-amazon.com/images/I/819DdWLncEL._UX569_.jpg"
-          price={898.0}
-          rating={3}
-          title="Puma Men's Regular fit Active Base Layer T-Shirt"
-        />
-        <Product
-          id={123}
-          image="https://images-na.ssl-images-amazon.com/images/I/71kwtkte06L._UL1500_.jpg"
-          price={2099.0}
-          rating={4}
-          title="Reebok Men's Identity Slipon Training Shoes"
-        />
-
-        <Product
-          id={456}
-          image="https://images-na.ssl-images-amazon.com/images/I/71znGoLL%2B4L._SL1500_.jpg"
-          price={73600.0}
-          rating={4}
-          title="Samsung Galaxy Note 10 (Aura Black, 8GB RAM, 256GB Storage) with No Cost EMI/Additional Exchange Offers"
-        />
-      </div>
-
-      <div className="home__row">
-        <Product
-          id={121}
-          image="https://www.amazon.com/images/I/810s87wc61L._AC_SL1500_.jpg"
-          price={112230.66}
-          rating={4}
-          title="SAMSUNG 32-inch Odyssey G7 – QHD 1000R Curved Gaming Monitor 240hz,1ms, Gsync & Freesync, QLED (LC32G75TQSNXZA), Black, 32 Inches"
-        />
+        {products &&
+          products.map((product) => (
+            <Product
+              key={product.data.id}
+              id={product.data.id}
+              image={product.data.image}
+              price={product.data.price}
+              rating={product.data.rating}
+              title={product.data.title}
+            />
+          ))}
       </div>
     </div>
   );

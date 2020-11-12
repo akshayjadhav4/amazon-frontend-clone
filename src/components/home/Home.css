@@ -1,7 +1,7 @@
-.home{
-    max-width: 1500px;
-    margin-left: auto;
-    margin-right: auto;
+.home {
+  max-width: 1500px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .home__image {
@@ -11,8 +11,9 @@
   margin-bottom: -150px;
 }
 
-.home__row{
+.home__row {
   display: flex;
+  flex-wrap: wrap;
   z-index: 1;
   margin-left: 5px;
   margin-right: 5px;
