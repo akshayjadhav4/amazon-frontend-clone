@@ -52,7 +52,7 @@ const CheckoutProduct = forwardRef(({ product, hideButton }, ref) => {
               <p>⭐</p>
             ))}
         </div>
-        {product?.quantity && (
+        {hideButton && (
           <p>
             Quantity: <strong>{product?.quantity}</strong>
           </p>
