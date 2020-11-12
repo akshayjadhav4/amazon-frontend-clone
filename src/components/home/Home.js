@@ -40,8 +40,8 @@ function Home() {
             })
             .map((product) => (
               <Product
-                key={product.data.id}
-                id={product.data.id}
+                key={product.id}
+                id={product.id}
                 image={product.data.image}
                 price={product.data.price}
                 rating={product.data.rating}
