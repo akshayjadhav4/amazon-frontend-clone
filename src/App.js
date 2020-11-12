@@ -34,6 +34,17 @@ function App() {
     };
   }, []);
 
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      if (localStorage.getItem("cart")) {
+        const data = JSON.parse(localStorage.getItem("cart"));
+        dispatch({
+          type: "SET_CART",
+          basket: data,
+        });
+      }
+    }
+  }, []);
   return (
     <Router>
       <div className="App">

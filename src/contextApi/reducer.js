@@ -9,7 +9,13 @@ export const getBasketTotal = (basket) =>
 
 function reducer(state, action) {
   switch (action.type) {
+    case "SET_CART":
+      return { ...state, basket: action.basket };
     case "ADD_TO_BASKET":
+      localStorage.setItem(
+        "cart",
+        JSON.stringify([...state.basket, action.item])
+      );
       return { ...state, basket: [...state.basket, action.item] };
     case "REMOVE_FROM_BASKET":
       let newBasket = [...state.basket];
@@ -20,8 +26,10 @@ function reducer(state, action) {
         //remove item
         newBasket.splice(index, 1);
       }
+      localStorage.setItem("cart", JSON.stringify(newBasket));
       return { ...state, basket: newBasket };
     case "EMPTY_BASKET":
+      localStorage.removeItem("cart");
       return {
         ...state,
         basket: [],
