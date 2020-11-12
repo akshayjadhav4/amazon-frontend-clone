@@ -1,8 +1,9 @@
 import React from "react";
 import "./Product.css";
 import { useStateValue } from "../../contextApi/StateProvider";
-function Product({ id, title, image, price, rating }) {
+import CurrencyFormat from "react-currency-format";
 
+function Product({ id, title, image, price, rating }) {
   const [{ basket }, dispatch] = useStateValue();
   const addToBasket = () => {
     dispatch({
@@ -20,10 +21,22 @@ function Product({ id, title, image, price, rating }) {
     <div className="product">
       <div className="product__info">
         <p>{title}</p>
-        <p className="product__price">
-          <small>₹</small>
-          <strong>{price}</strong>
-        </p>
+        <div className="product__price">
+          <CurrencyFormat
+            renderText={(value) => (
+              <>
+                <p>
+                  <strong>{value}</strong>
+                </p>
+              </>
+            )}
+            decimalScale={2}
+            value={price}
+            displayType={"text"}
+            thousandSeparator={true}
+            prefix={"₹"}
+          />
+        </div>
         <div className="product__rating">
           {Array(rating)
             .fill()
