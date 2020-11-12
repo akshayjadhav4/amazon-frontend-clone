@@ -1,12 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Header.css";
 import { Link } from "react-router-dom";
 import SearchIcon from "@material-ui/icons/Search";
 import ShoppingBasketIcon from "@material-ui/icons/ShoppingBasket";
 import { useStateValue } from "../../contextApi/StateProvider";
 import { auth } from "../../firebase/Firebase";
+import { useHistory } from "react-router-dom";
+
 function Header() {
   const [{ basket, user }, dispatch] = useStateValue();
+  const [searchTerm, setSearchTerm] = useState("");
+  const history = useHistory();
   const login = () => {
     if (user) {
       auth.signOut();
@@ -14,10 +18,14 @@ function Header() {
   };
 
   const searchProduct = (event) => {
-    dispatch({
-      type: "SET_SEARCH_ITEM",
-      search: event.target.value,
-    });
+    if (history.location.pathname === "/") {
+      dispatch({
+        type: "SET_SEARCH_ITEM",
+        search: event.target.value,
+      });
+    } else {
+      history.push("/");
+    }
   };
 
   return (
