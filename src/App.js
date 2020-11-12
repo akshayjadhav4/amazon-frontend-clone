@@ -40,7 +40,7 @@ function App() {
         const data = JSON.parse(localStorage.getItem("cart"));
         dispatch({
           type: "SET_CART",
-          basket: data,
+          basket: data.cart,
         });
       }
     }

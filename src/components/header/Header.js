@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import "./Header.css";
 import { Link } from "react-router-dom";
 import SearchIcon from "@material-ui/icons/Search";
@@ -9,7 +9,7 @@ import { useHistory } from "react-router-dom";
 
 function Header() {
   const [{ basket, user }, dispatch] = useStateValue();
-  const [searchTerm, setSearchTerm] = useState("");
+
   const history = useHistory();
   const login = () => {
     if (user) {

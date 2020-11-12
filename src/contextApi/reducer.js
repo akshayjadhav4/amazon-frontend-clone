@@ -14,7 +14,7 @@ function reducer(state, action) {
     case "ADD_TO_BASKET":
       localStorage.setItem(
         "cart",
-        JSON.stringify([...state.basket, action.item])
+        JSON.stringify({ cart: [...state.basket, action.item] })
       );
       return { ...state, basket: [...state.basket, action.item] };
     case "REMOVE_FROM_BASKET":
@@ -26,7 +26,7 @@ function reducer(state, action) {
         //remove item
         newBasket.splice(index, 1);
       }
-      localStorage.setItem("cart", JSON.stringify(newBasket));
+      localStorage.setItem("cart", JSON.stringify({ cart: newBasket }));
       return { ...state, basket: newBasket };
     case "EMPTY_BASKET":
       localStorage.removeItem("cart");
