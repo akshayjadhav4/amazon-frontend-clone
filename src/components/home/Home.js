@@ -23,6 +23,14 @@ function Home() {
     });
   }, []);
 
+  const checkProductAvailable = products.filter((item) => {
+    if (!search) return true;
+    if (item.data.title.toUpperCase().includes(search.toUpperCase())) {
+      return true;
+    }
+    return false;
+  });
+
   return (
     <div className="home">
       <img
@@ -36,27 +44,26 @@ function Home() {
         </div>
       ) : (
         <div className="home__row">
-          {products &&
-            products
-              .filter((item) => {
-                if (!search) return true;
-                if (
-                  item.data.title.toUpperCase().includes(search.toUpperCase())
-                ) {
-                  return true;
-                }
-                return false;
-              })
-              .map((product) => (
-                <Product
-                  key={product.id}
-                  id={product.id}
-                  image={product.data.image}
-                  price={product.data.price}
-                  rating={product.data.rating}
-                  title={product.data.title}
-                />
-              ))}
+          {checkProductAvailable.length > 0 ? (
+            checkProductAvailable.map((product) => (
+              <Product
+                key={product.id}
+                id={product.id}
+                image={product.data.image}
+                price={product.data.price}
+                rating={product.data.rating}
+                title={product.data.title}
+              />
+            ))
+          ) : (
+            <h1
+              style={{
+                color: "white",
+              }}
+            >
+              No product found.
+            </h1>
+          )}
         </div>
       )}
     </div>
