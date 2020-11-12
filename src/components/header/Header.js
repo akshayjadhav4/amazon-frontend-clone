@@ -6,12 +6,20 @@ import ShoppingBasketIcon from "@material-ui/icons/ShoppingBasket";
 import { useStateValue } from "../../contextApi/StateProvider";
 import { auth } from "../../firebase/Firebase";
 function Header() {
-  const [{ basket, user }] = useStateValue();
+  const [{ basket, user }, dispatch] = useStateValue();
   const login = () => {
     if (user) {
       auth.signOut();
     }
   };
+
+  const searchProduct = (event) => {
+    dispatch({
+      type: "SET_SEARCH_ITEM",
+      search: event.target.value,
+    });
+  };
+
   return (
     <nav className="header">
       <Link to="/">
@@ -22,7 +30,11 @@ function Header() {
         />
       </Link>
       <div className="header__search">
-        <input type="text" className="header__searchInput" />
+        <input
+          type="text"
+          className="header__searchInput"
+          onChange={searchProduct}
+        />
         <SearchIcon className="header__searchIcon" />
       </div>
       <div className="header__nav">

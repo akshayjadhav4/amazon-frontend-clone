@@ -1,6 +1,7 @@
 export const initialState = {
   basket: [],
   user: null,
+  search: "",
 };
 
 export const getBasketTotal = (basket) =>
@@ -30,6 +31,11 @@ function reducer(state, action) {
       return {
         ...state,
         user: action.user,
+      };
+    case "SET_SEARCH_ITEM":
+      return {
+        ...state,
+        search: action.search,
       };
     default:
       return state;

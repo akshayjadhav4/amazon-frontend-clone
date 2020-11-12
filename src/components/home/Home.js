@@ -2,9 +2,11 @@ import React, { useState, useEffect } from "react";
 import "./Home.css";
 import Product from "../product/Product";
 import { db } from "../../firebase/Firebase";
+import { useStateValue } from "../../contextApi/StateProvider";
 
 function Home() {
   const [products, setProducts] = useState([]);
+  const [{ search }] = useStateValue();
 
   useEffect(() => {
     db.collection("products").onSnapshot((snapshot) => {
@@ -26,16 +28,26 @@ function Home() {
       />
       <div className="home__row">
         {products &&
-          products.map((product) => (
-            <Product
-              key={product.data.id}
-              id={product.data.id}
-              image={product.data.image}
-              price={product.data.price}
-              rating={product.data.rating}
-              title={product.data.title}
-            />
-          ))}
+          products
+            .filter((item) => {
+              if (!search) return true;
+              if (
+                item.data.title.toUpperCase().includes(search.toUpperCase())
+              ) {
+                return true;
+              }
+              return false;
+            })
+            .map((product) => (
+              <Product
+                key={product.data.id}
+                id={product.data.id}
+                image={product.data.image}
+                price={product.data.price}
+                rating={product.data.rating}
+                title={product.data.title}
+              />
+            ))}
       </div>
     </div>
   );
