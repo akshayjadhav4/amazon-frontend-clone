@@ -2,30 +2,44 @@ import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import "./Login.css";
 import { auth } from "../../firebase/Firebase";
+import { CircularProgress } from "@material-ui/core";
 function Login() {
   const history = useHistory();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const [processing, setProcessing] = useState(false);
+  const [operation, setOperation] = useState("");
   const login = (event) => {
     event.preventDefault();
+    setProcessing(true);
+    setOperation("login");
     auth
       .signInWithEmailAndPassword(email, password)
       .then((auth) => {
         //loggedIn redirect
+        setProcessing(false);
         history.push("/");
       })
-      .catch((e) => alert(e.message));
+      .catch((e) => {
+        setProcessing(false);
+        alert(e.message);
+      });
   };
   const register = (event) => {
     event.preventDefault();
+    setProcessing(true);
+    setOperation("register");
     auth
       .createUserWithEmailAndPassword(email, password)
       .then((auth) => {
         // user created & loggedIn redirect
+        setProcessing(false);
         history.push("/");
       })
-      .catch((e) => alert(e.message));
+      .catch((e) => {
+        setProcessing(false);
+        alert(e.message);
+      });
   };
 
   return (
@@ -55,7 +69,11 @@ function Login() {
             onChange={(e) => setPassword(e.target.value)}
           />
           <button className="login_signInButton" type="submit" onClick={login}>
-            Sign In
+            {processing && operation === "login" ? (
+              <CircularProgress size="20px" />
+            ) : (
+              "Sign In"
+            )}
           </button>
         </form>
         <p>
@@ -64,8 +82,16 @@ function Login() {
         </p>
         <hr />
         <span>New to Amazon?</span>
-        <button className="login_registerButton" onClick={register}>
-          Create your Amazon account
+        <button
+          className="login_registerButton"
+          onClick={register}
+          disabled={processing}
+        >
+          {processing && operation === "register" ? (
+            <CircularProgress size="20px" />
+          ) : (
+            "Create your Amazon account"
+          )}
         </button>
       </div>
     </div>

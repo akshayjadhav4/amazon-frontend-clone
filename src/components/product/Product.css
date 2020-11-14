@@ -36,4 +36,9 @@
 .product > button {
   background-color: #f0c14f;
   border: 1px solid #a88734 #9c7e31 #846a29;
+  cursor: pointer;
+  width: 30%;
+  height: 30px;
+  border-radius: 20px;
+  outline-width: 0;
 }

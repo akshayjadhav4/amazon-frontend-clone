@@ -17,6 +17,7 @@ function Header() {
   const login = () => {
     if (user) {
       auth.signOut();
+      history.push("/");
     }
   };
 
@@ -55,19 +56,23 @@ function Header() {
           </div>
         </Link>
 
-        <Link to="/orders" className="header__link">
+        <Link to={user ? "/orders" : "/login"} className="header__link">
           <div className="header_options">
             <span className="header_optionLineOne">Returns</span>
             <span className="header_optionLineTwo">& Orders</span>
           </div>
         </Link>
 
-        <Link to="/" className="header__link">
+        <a
+          target="_blank"
+          href="https://www.primevideo.com/?ref_=dvm_pds_amz_in_as_s_g_146|m_lgAX6a65c_c386629063406"
+          className="header__link"
+        >
           <div className="header_options">
             <span className="header_optionLineOne">Try</span>
             <span className="header_optionLineTwo">Prime</span>
           </div>
-        </Link>
+        </a>
 
         <Link to="/checkout" className="header__link">
           <div className="header_optionBasket">

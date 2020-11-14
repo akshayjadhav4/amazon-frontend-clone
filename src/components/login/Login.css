@@ -59,6 +59,7 @@
   height: 30px;
   margin-top: 10px;
   color: #111;
+  cursor: pointer;
 }
 
 .login_registerButton {
@@ -67,4 +68,5 @@
   height: 30px;
   margin-top: 10px;
   color: #111;
+  cursor: pointer;
 }

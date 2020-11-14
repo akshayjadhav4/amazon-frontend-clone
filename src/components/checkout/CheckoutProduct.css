@@ -31,11 +31,19 @@
   margin-left: 20px;
   margin-right: 20px;
 }
+
+.checkoutProduct__quantity > button {
+  cursor: pointer;
+}
 .checkoutProduct__info > button {
   background-color: #f0c14f;
   border: 1px solid #a88734 #9c7e31 #846a29;
   margin-top: 10px;
   color: #111;
+  cursor: pointer;
+  height: 30px;
+  border-radius: 20px;
+  outline-width: 0;
 }
 
 @media (max-width: 666px) {
