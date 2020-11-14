@@ -1,13 +1,13 @@
 .payment {
-  color: white;
-  background-color: #2c2c2e;
+  color: black;
+  background-color: #ffffff;
 }
 
 .payment__container > h1 {
   text-align: center;
   padding: 10px;
   font-weight: 400;
-  background-color: #1c1c1e;
+  background-color: #ffffff;
   border-bottom: 1px solid lightgray;
 }
 

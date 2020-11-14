@@ -58,7 +58,8 @@ function Home() {
           ) : (
             <h1
               style={{
-                color: "white",
+                color: "black",
+                margin: "auto",
               }}
             >
               No product found.
