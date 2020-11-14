@@ -1,44 +1,48 @@
 .payment {
-  color: black;
-  background-color: #ffffff;
-}
-
-.payment__container > h1 {
-  text-align: center;
-  padding: 10px;
-  font-weight: 400;
-  background-color: #ffffff;
-  border-bottom: 1px solid lightgray;
-}
-
-.payment__container > h1 a {
-  text-decoration: none;
-}
-
-.payment__section {
   display: flex;
-  padding: 20px;
-  margin: 0 20px;
-  border-bottom: 1px solid lightgray;
+  padding: 10px;
 }
-
 .payment__title {
-  flex: 0.2;
+  padding: 10px;
+}
+.payment__itemCount {
+  padding: 10px;
+  color: rgb(148, 148, 148);
+}
+.payment__summary {
+  flex: 0.5;
+  background-color: white;
+}
+.payment__method {
+  flex: 0.5;
+  padding: 10px;
 }
 
-.payment__address,
-.payment__details,
-.payment__items {
-  flex: 0.8;
+.payment__address {
+  width: 100%;
+  height: 30px;
+  outline-width: 0;
+  border: 1px solid lightgray;
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 
-.payment__details > form {
-  max-width: 400px;
+.payment__cardForm {
+  padding: 5px;
+  border-radius: 4px;
+  background-color: white;
 }
 
-.payment__details > h3 {
-  padding-bottom: 20px;
+.payment__cardInput {
+  border: 1px solid gray;
+  padding: 5px;
+  border-radius: 5px;
 }
+.payment__cardForm > label {
+  margin-top: 5px;
+  font-weight: 500;
+}
+
 .payment__button {
   background-color: #f0c14f;
   border-radius: 2px;
@@ -49,4 +53,13 @@
   margin-top: 10px;
   color: #111;
   font-weight: bolder;
+  cursor: pointer;
+  border-radius: 20px;
+  outline-width: 0;
+}
+
+@media (max-width: 885px) {
+  .payment {
+    flex-direction: column;
+  }
 }

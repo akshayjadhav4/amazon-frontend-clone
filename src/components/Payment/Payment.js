@@ -4,17 +4,30 @@ import CheckoutProduct from "../checkout/CheckoutProduct";
 import FlipMove from "react-flip-move";
 import { useSelector, useDispatch } from "react-redux";
 import { emptyCart } from "../../redux/action/cart";
-import { Link, useHistory } from "react-router-dom";
-import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
+import { useHistory } from "react-router-dom";
+import {
+  CardNumberElement,
+  CardCvcElement,
+  CardExpiryElement,
+  useStripe,
+  useElements,
+} from "@stripe/react-stripe-js";
 import CurrencyFormat from "react-currency-format";
-import { getBasketTotal } from "../../redux/reducer/cart";
+import {
+  getBasketTotal,
+  getTotalNumberOfItems,
+} from "../../redux/reducer/cart";
 import axios from "../../api/axios";
 import { db } from "../../firebase/Firebase";
+import Cards from "react-credit-cards";
+import "react-credit-cards/es/styles-compiled.css";
 function Payment() {
+  // redux
   const { user } = useSelector((state) => state.auth);
   const { basket } = useSelector((state) => state.cart);
   const dispatch = useDispatch();
 
+  // stripe
   const stripe = useStripe();
   const elements = useElements();
 
@@ -25,15 +38,25 @@ function Payment() {
   const [succeeded, setSucceeded] = useState(false);
   const [proccessing, setProccessing] = useState(false);
   const [clientSecret, setClientSecret] = useState("");
+  const [address, setAddress] = useState("");
 
+  // card component (only UI purpose)
+  const [cardNumer, setCardNumer] = useState("");
+  const [expiry, setExpiry] = useState("");
+
+  // payment processing
   const handleSubmit = async (event) => {
     event.preventDefault();
+    if (!address) {
+      setError("Provide address.");
+      return;
+    }
     setProccessing(true);
     const payLoad = await stripe
       .confirmCardPayment(clientSecret, {
         payment_method: {
           type: "card",
-          card: elements.getElement(CardElement),
+          card: elements.getElement("cardNumber"),
         },
       })
       .then(({ paymentIntent }) => {
@@ -44,6 +67,7 @@ function Payment() {
           .doc(paymentIntent.id)
           .set({
             basket: basket,
+            address: address,
             amount: paymentIntent.amount,
             created: paymentIntent.created,
           });
@@ -54,8 +78,21 @@ function Payment() {
         history.replace("/orders");
       });
   };
+  // stirp card element
   const handleChange = (event) => {
     setDisable(event.empty);
+    setCardNumer(4242);
+    setError(event.error ? event.error.message : "");
+  };
+
+  const handleChangeCVC = (event) => {
+    setDisable(event.empty);
+    setError(event.error ? event.error.message : "");
+  };
+
+  const handleChangeExpire = (event) => {
+    setDisable(event.empty);
+    setExpiry(`12/25`);
     setError(event.error ? event.error.message : "");
   };
 
@@ -69,44 +106,75 @@ function Payment() {
     };
     getClientSecret();
   }, [basket]);
+
   return (
     <div className="payment">
-      <div className="payment__container">
+      <div className="payment__summary">
+        <div className="payment__title">
+          <h1>Your Order summary</h1>
+        </div>
+        <h3 className="payment__itemCount">
+          {" "}
+          Total items {getTotalNumberOfItems(basket)} in your cart
+        </h3>
+
+        <div className="payment__items">
+          <FlipMove duration={400}>
+            {basket.map((item) => (
+              <CheckoutProduct product={item} key={item.id} />
+            ))}
+          </FlipMove>
+        </div>
+      </div>
+      <div className="payment__method">
         <h1>
-          Checkout (<Link to="/checkout"> {basket?.length} items</Link>)
+          Please fill out <br /> your payment Details
         </h1>
-        <div className="payment__section">
-          <div className="payment__title">
-            <h3>Delivery Address</h3>
-          </div>
-          <div className="payment__address">
-            <p>{user?.email}</p>
-            <p>
-              Address : Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-            </p>
-            <p>Proin gravida mauris vitae vehicula ultricies.</p>
-          </div>
-        </div>
-        <div className="payment__section">
-          <div className="payment__title">
-            <h3>Review items and delivery</h3>
-          </div>
-          <div className="payment__items">
-            <FlipMove duration={400}>
-              {basket.map((item) => (
-                <CheckoutProduct product={item} key={item.id} />
-              ))}
-            </FlipMove>
-          </div>
-        </div>
+        <br />
+        <h3>Contact Detail: {user?.email}</h3>
+        <h3>Delivery Address</h3>
+        <input
+          type="text"
+          placeholder="Address"
+          className="payment__address"
+          value={address}
+          onChange={(e) => setAddress(e.target.value)}
+        />
         {user ? (
           <div className="payment__section">
-            <div className="payment__title">
-              <h3>Payment Method</h3>
-            </div>
+            <h3>Payment Method</h3>
+            <Cards
+              expiry={expiry}
+              name={user?.email.substring(0, user?.email.lastIndexOf("@"))}
+              number={cardNumer}
+            />
             <div className="payment__details">
               <form onSubmit={handleSubmit}>
-                <CardElement onChange={handleChange} />
+                <div className="payment__cardForm">
+                  <label htmlFor="number">Card Number</label>
+                  <div className="payment__cardInput">
+                    <CardNumberElement
+                      onChange={handleChange}
+                      options={{ style: { base: { fontSize: "20px" } } }}
+                    />
+                  </div>
+
+                  <label htmlFor="cvc">Card CVC</label>
+                  <div className="payment__cardInput">
+                    <CardCvcElement
+                      onChange={handleChangeCVC}
+                      options={{ style: { base: { fontSize: "20px" } } }}
+                    />
+                  </div>
+
+                  <label htmlFor="expirationDate">Expiration date</label>
+                  <div className="payment__cardInput">
+                    <CardExpiryElement
+                      onChange={handleChangeExpire}
+                      options={{ style: { base: { fontSize: "20px" } } }}
+                    />
+                  </div>
+                </div>
                 <div className="payment__priceContainer">
                   <CurrencyFormat
                     renderText={(value) => (
@@ -133,7 +201,7 @@ function Payment() {
                     <p>Cart is empty</p>
                   )}
                 </div>
-                {error && <div>{error}</div>}
+                {error && <div style={{ color: "red" }}>{error}</div>}
               </form>
             </div>
           </div>
