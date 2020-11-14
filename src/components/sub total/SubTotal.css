@@ -28,3 +28,9 @@
   margin-top: 10px;
   color: #111;
 }
+
+@media (max-width: 870px) {
+  .subtotal {
+    width: 100%;
+  }
+}

@@ -37,3 +37,12 @@
   margin-top: 10px;
   color: #111;
 }
+
+@media (max-width: 666px) {
+  .checkoutProduct {
+    flex-direction: column;
+  }
+  .checkoutProduct > img {
+    align-self: center;
+  }
+}

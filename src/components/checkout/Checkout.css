@@ -16,3 +16,18 @@
   width: 100%;
   margin-bottom: 10px;
 }
+
+@media (max-width: 870px) {
+  .checkout {
+    flex-direction: column-reverse;
+  }
+
+  .checkout__ad {
+    display: none;
+  }
+
+  .checkout__right {
+    display: flex;
+    justify-content: center;
+  }
+}

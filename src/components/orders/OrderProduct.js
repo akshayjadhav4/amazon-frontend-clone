@@ -6,15 +6,17 @@ import CheckoutProduct from "../checkout/CheckoutProduct";
 function OrderProduct({ order }) {
   return (
     <div className="orderProduct">
-      <h2>Order</h2>
-      <p>
-        {moment
-          .unix(order.data.created)
-          .format("dddd, MMMM Do YYYY, h:mm:ss a")}
-      </p>
-      <p className="orderProduct__id">
-        <small>{order.id}</small>
-      </p>
+      <div className="orderProduct__info">
+        <h2>Order</h2>
+        <p>
+          {moment
+            .unix(order.data.created)
+            .format("dddd, MMMM Do YYYY, h:mm:ss a")}
+        </p>
+        <p className="orderProduct__id">
+          <small>OrderID: {order.id}</small>
+        </p>
+      </div>
 
       {order.data.basket?.map((product) => (
         <CheckoutProduct product={product} key={product.id} hideButton />

@@ -16,3 +16,15 @@
   font-weight: 500;
   text-align: right;
 }
+
+@media (max-width: 550px) {
+  .orderProduct__info {
+    display: flex;
+    flex-direction: column;
+  }
+  .orderProduct__id {
+    position: relative;
+    top: 0;
+    right: 0;
+  }
+}

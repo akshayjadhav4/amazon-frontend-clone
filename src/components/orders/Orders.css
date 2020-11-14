@@ -6,3 +6,12 @@
 .orders > h1 {
   margin: 30px 0;
 }
+
+.orders__loader {
+  display: grid;
+  place-items: center;
+}
+
+.orders__loader > .MuiCircularProgress-colorPrimary {
+  color: #2e2e2e !important;
+}
