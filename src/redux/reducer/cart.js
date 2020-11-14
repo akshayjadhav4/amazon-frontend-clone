@@ -1,19 +1,17 @@
-export const initialState = {
+const initialState = {
   basket: [],
-  user: null,
-  search: "",
 };
-
 export const getBasketTotal = (basket) =>
   basket?.reduce((amount, item) => item.price * item.quantity + amount, 0);
 
 export const getTotalNumberOfItems = (basket) =>
   basket?.reduce((total, item) => item.quantity + total, 0);
 
-function reducer(state, action) {
+export default (state = initialState, action) => {
   switch (action.type) {
     case "SET_CART":
       return { ...state, basket: action.basket };
+
     case "ADD_TO_BASKET":
       // check already product is present or not
       const itemIndex = state.basket.findIndex(
@@ -44,6 +42,7 @@ function reducer(state, action) {
         );
         return { ...state, basket: [...state.basket, action.item] };
       }
+
     case "REMOVE_FROM_BASKET":
       let newBasket = [...state.basket];
       const index = state.basket.findIndex(
@@ -55,6 +54,7 @@ function reducer(state, action) {
       }
       localStorage.setItem("cart", JSON.stringify({ cart: newBasket }));
       return { ...state, basket: newBasket };
+
     case "REMOVE_ITEM_FROM_BASKET":
       let removedItemBasket = [...state.basket];
       const indexItem = state.basket.findIndex(
@@ -77,6 +77,7 @@ function reducer(state, action) {
       }
       localStorage.setItem("cart", JSON.stringify({ cart: removedItemBasket }));
       return { ...state, basket: removedItemBasket };
+
     case "EMPTY_BASKET":
       localStorage.removeItem("cart");
       return {
@@ -84,19 +85,7 @@ function reducer(state, action) {
         basket: [],
       };
 
-    case "SET_USER":
-      return {
-        ...state,
-        user: action.user,
-      };
-    case "SET_SEARCH_ITEM":
-      return {
-        ...state,
-        search: action.search,
-      };
     default:
       return state;
   }
-}
-
-export default reducer;
+};

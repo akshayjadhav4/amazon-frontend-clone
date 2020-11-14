@@ -1,22 +1,22 @@
 import React from "react";
 import "./Product.css";
-import { useStateValue } from "../../contextApi/StateProvider";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../redux/action/cart";
 import CurrencyFormat from "react-currency-format";
 import shortid from "shortid";
 function Product({ id, title, image, price, rating }) {
-  const [{ basket }, dispatch] = useStateValue();
+  const dispatch = useDispatch();
+
   const addToBasket = () => {
-    dispatch({
-      type: "ADD_TO_BASKET",
-      item: {
-        id: shortid.generate(),
-        productId: id,
-        title,
-        image,
-        price,
-        rating,
-      },
-    });
+    const item = {
+      id: shortid.generate(),
+      productId: id,
+      title,
+      image,
+      price,
+      rating,
+    };
+    dispatch(addToCart(item));
   };
   return (
     <div className="product">

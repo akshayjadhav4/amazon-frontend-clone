@@ -1,36 +1,33 @@
 import React, { forwardRef } from "react";
 import "./CheckoutProduct.css";
-import { useStateValue } from "../../contextApi/StateProvider";
+import { useDispatch } from "react-redux";
+import {
+  addToCart,
+  removeFromCart,
+  removeItemFromCart,
+} from "../../redux/action/cart";
 import shortid from "shortid";
 
 const CheckoutProduct = forwardRef(({ product, hideButton }, ref) => {
-  const [{ basket }, dispatch] = useStateValue();
+  const dispatch = useDispatch();
   const removeFromBasket = () => {
-    dispatch({
-      type: "REMOVE_FROM_BASKET",
-      id: product.id,
-    });
+    dispatch(removeFromCart(product.id));
   };
 
   const addToBasket = () => {
-    dispatch({
-      type: "ADD_TO_BASKET",
-      item: {
-        id: shortid.generate(),
-        productId: product.productId,
-        title: product.title,
-        image: product.image,
-        price: product.price,
-        rating: product.rating,
-      },
-    });
+    const item = {
+      id: shortid.generate(),
+      productId: product.productId,
+      title: product.title,
+      image: product.image,
+      price: product.price,
+      rating: product.rating,
+    };
+    dispatch(addToCart(item));
   };
 
   const removeItemFromBasket = () => {
-    dispatch({
-      type: "REMOVE_ITEM_FROM_BASKET",
-      id: product.id,
-    });
+    dispatch(removeItemFromCart(product.id));
   };
   return (
     <div className="checkoutProduct" ref={ref}>

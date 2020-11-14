@@ -2,13 +2,13 @@ import React, { useState, useEffect } from "react";
 import "./Home.css";
 import Product from "../product/Product";
 import { db } from "../../firebase/Firebase";
-import { useStateValue } from "../../contextApi/StateProvider";
+import { useSelector } from "react-redux";
 import { CircularProgress } from "@material-ui/core";
 
 function Home() {
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [{ search }] = useStateValue();
+  const { search } = useSelector((state) => state.search);
 
   useEffect(() => {
     setIsLoading(true);

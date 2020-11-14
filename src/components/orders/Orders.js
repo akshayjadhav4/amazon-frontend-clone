@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import "./Orders.css";
-import { useStateValue } from "../../contextApi/StateProvider";
+import { useSelector } from "react-redux";
 import { db } from "../../firebase/Firebase";
 import OrderProduct from "./OrderProduct";
 function Orders() {
-  const [{ user }, dispatch] = useStateValue();
+  const { user } = useSelector((state) => state.auth);
 
   const [orders, setOrders] = useState([]);
   useEffect(() => {

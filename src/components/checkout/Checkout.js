@@ -1,11 +1,13 @@
 import React from "react";
-import { useStateValue } from "../../contextApi/StateProvider";
+import { useSelector } from "react-redux";
 import "./Checkout.css";
 import CheckoutProduct from "./CheckoutProduct";
 import SubTotal from "../sub total/SubTotal";
 import FlipMove from "react-flip-move";
 function Checkout() {
-  const [{ basket, user }] = useStateValue();
+  const { user } = useSelector((state) => state.auth);
+  const { basket } = useSelector((state) => state.cart);
+
   return (
     <div className="checkout">
       <div className="checkout__left">

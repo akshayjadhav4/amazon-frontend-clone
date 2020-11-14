@@ -2,15 +2,18 @@ import React, { useState, useEffect } from "react";
 import "./Payment.css";
 import CheckoutProduct from "../checkout/CheckoutProduct";
 import FlipMove from "react-flip-move";
-import { useStateValue } from "../../contextApi/StateProvider";
+import { useSelector, useDispatch } from "react-redux";
+import { emptyCart } from "../../redux/action/cart";
 import { Link, useHistory } from "react-router-dom";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import CurrencyFormat from "react-currency-format";
-import { getBasketTotal } from "../../contextApi/reducer";
+import { getBasketTotal } from "../../redux/reducer/cart";
 import axios from "../../api/axios";
 import { db } from "../../firebase/Firebase";
 function Payment() {
-  const [{ basket, user }, dispatch] = useStateValue();
+  const { user } = useSelector((state) => state.auth);
+  const { basket } = useSelector((state) => state.cart);
+  const dispatch = useDispatch();
 
   const stripe = useStripe();
   const elements = useElements();
@@ -47,9 +50,7 @@ function Payment() {
         setSucceeded(true);
         setError(null);
         setProccessing(false);
-        dispatch({
-          type: "EMPTY_BASKET",
-        });
+        dispatch(emptyCart());
         history.replace("/orders");
       });
   };
